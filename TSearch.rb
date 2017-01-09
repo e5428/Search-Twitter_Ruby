@@ -1,4 +1,4 @@
-# 2016_12_22
+# 2017_01_09
 
 require 'pp'
 require 'twitter'
@@ -21,22 +21,15 @@ consumer = OAuth::Consumer.new(
 
 endpoint = OAuth::AccessToken.new(consumer, access_token, access_token_secret)
 
-response = endpoint.get('https://api.twitter.com/1.1/users/search.json?q=twitter')
+response = endpoint.get('https://api.twitter.com/1.1/users/search.json?q=twitter&count=1')
 result = JSON.parse(response.body)
 
-# pp result
+# p result.class
 
-# result.each_line do |line|
-#   if /id/ =~ line
-#     puts line
-#   end
-# end
+ary = result.to_s.split(",") # 配列 -> 文字列 -> 配列
 
-# TSearch.rb:29:in `<main>': undefined method `each_line' for #<Array:0x000000038e5af0> (NoMethodError)
-#Did you mean?  each_index
-#               each_slice
-#               each
-#               each_with_index
-#               each_entry
-#               each_cons
-
+ ary.each do |line|
+   if /id/ =~ line
+     puts line
+   end
+ end
