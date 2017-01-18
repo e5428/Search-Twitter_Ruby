@@ -1,10 +1,13 @@
-# 2017_01_09
+# 2017_01_18
 
-require 'pp'
 require 'twitter'
 require 'net/http'
 require 'uri'
 require 'oauth'
+
+print"検索ワードを入力 => "
+
+search = gets.chomp
 
 OpenSSL::SSL::VERIFY_PEER = OpenSSL::SSL::VERIFY_NONE
 
@@ -21,15 +24,17 @@ consumer = OAuth::Consumer.new(
 
 endpoint = OAuth::AccessToken.new(consumer, access_token, access_token_secret)
 
-response = endpoint.get('https://api.twitter.com/1.1/users/search.json?q=twitter&count=1')
-result = JSON.parse(response.body)
+str = URI.encode_www_form_component("#{search}")
 
-# p result.class
+uri = ("https://api.twitter.com/1.1/users/search.json?q=" + str + "&count=1")
+
+response = endpoint.get(uri)
+ result = JSON.parse(response.body)
 
 ary = result.to_s.split(",") # 配列 -> 文字列 -> 配列
 
  ary.each do |line|
-   if /id/ =~ line
+   if /"id"=>/ =~ line
      puts line
    end
  end
