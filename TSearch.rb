@@ -1,12 +1,14 @@
-# 2017_01_22
+# 2017_03_07
 
 require 'twitter'
 require 'net/http'
 require 'uri'
 require 'oauth'
 
-print"検索ワードを入力 => "
- search = gets.chomp
+puts " ユーザーIDを表示します"
+print "検索ワードを入力 => "
+
+search = gets.chomp
 
 OpenSSL::SSL::VERIFY_PEER
 
@@ -32,9 +34,8 @@ response = endpoint.get(uri)
 
 ary = result.to_s.split(",")
 
-ary.each do |line|
-  if /{"id"=>/ =~ line
-    puts line
-  end
-end
-
+ ary.each do |line|
+   if ( /"id"=>/ =~ line ) && ( line.size <= 18 )
+     puts line
+   end
+ end
